@@ -19,10 +19,17 @@ async function run(){
 
     try{
         app.get('/fruits', async(req, res)=>{
-            const query = {};
+            const email = req.query.email;
+            const query = {email:email};
             const cursor = fruitsCollection.find(query);
             const fruits = await cursor.toArray();
             res.send(fruits);
+        })
+
+        app.post('/fruits', async(req, res)=>{
+            const query = req.body;
+            const fruits = await fruitsCollection.insertOne(query);
+            res.send(fruits); 
         })
 
         app.get('/fruits/:id', async(req, res)=>{
