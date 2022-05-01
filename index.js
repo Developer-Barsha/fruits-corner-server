@@ -15,11 +15,19 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 
 async function run() {
     await client.connect();
-    const fruitsCollection = client.db("fruitsCorner").collection("fruit");
-
+    const fruitsCollection = client.db("fruitsCenter").collection("fruit");
+    
     try {
         // get all fruits
-        app.get('/fruits', async (req, res) => {
+        app.get('/allfruits', async (req, res) => {
+            const query = {};
+            const cursor = fruitsCollection.find(query);
+            const fruits = await cursor.toArray();
+            res.send(fruits);
+        })
+
+        // get all fruits by user email
+        app.get('/userfruits', async (req, res) => {
             const email = req.query.email;
             const query = { email: email };
             const cursor = fruitsCollection.find(query);
@@ -49,7 +57,7 @@ async function run() {
             const query = { _id: ObjectId(id) };
             const options = { upsert: true };
             const updateDoc = {
-                $set: {updatedFruit},
+                $set: updatedFruit
             };
             const result = await fruitsCollection.updateOne(query, updateDoc, options);
             res.send(result);
