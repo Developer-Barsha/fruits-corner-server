@@ -36,14 +36,14 @@ async function run() {
         })
 
         // post fruit api
-        app.post('/fruits', async (req, res) => {
+        app.post('/allfruits', async (req, res) => {
             const query = req.body;
             const fruits = await fruitsCollection.insertOne(query);
             res.send(fruits);
         })
 
         // get fruit by id
-        app.get('/fruits/:id', async (req, res) => {
+        app.get('/userfruits/:id', async (req, res) => {
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
             const fruit = await fruitsCollection.findOne(query);
