@@ -26,7 +26,7 @@ async function run() {
             res.send(fruits);
         })
 
-        // get all fruits by user email
+        // get fruits by user email
         app.get('/userfruits', async (req, res) => {
             const email = req.query.email;
             const query = email ? {email} : {};
@@ -50,7 +50,7 @@ async function run() {
             res.send(fruit);
         })
         
-        // update fruit info
+        // update fruit api
         app.put('/allfruits/:id', async (req, res) => {
             const id = req.params.id;
             const updatedFruit = req.body;
@@ -63,7 +63,7 @@ async function run() {
             res.send(result);
         })
         
-        // delete fruit by id
+        // delete fruit api
         app.delete('/allfruits/:id', async (req, res) => {
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
