@@ -3,11 +3,17 @@ const app = express();
 const cors = require('cors');
 require('dotenv').config();
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
+const jwt = require('jsonwebtoken');
+const token = jwt.sign({ foo: 'bar' }, 'shhhhh');
 const port = process.env.PORT || 5000;
 
 // middlewares
 app.use(cors());
 app.use(express.json());
+
+const verifyJWT=user=>{
+
+}
 
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.ldw54.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
@@ -18,6 +24,15 @@ async function run() {
     const fruitsCollection = client.db("fruitsCenter").collection("fruit");
     
     try {
+        // AUTH
+        app.post('/login', async(req, res)=>{
+            const user = req.body;
+            const accessToken = jwt.sign(user, process.env.SECRET_TOKEN, {
+                expiresIn:'1d'
+            });
+            res.send({accessToken});
+        })
+
         // get all fruits
         app.get('/allfruits', async (req, res) => {
             const query = {};
@@ -28,6 +43,8 @@ async function run() {
 
         // get fruits by user email
         app.get('/userfruits', async (req, res) => {
+            const authHeader = req.headers.authorization;
+            console.log(authHeader);
             const email = req.query.email;
             const query = email ? {email} : {};
             const cursor = fruitsCollection.find(query);
