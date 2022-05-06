@@ -69,22 +69,6 @@ async function run() {
             }
         })
         
-        // get all blogs
-        app.get('/blogs', async (req, res) => {
-            const query = {};
-            const cursor = blogsCollection.find(query);
-            const blogs = await cursor.toArray();
-            res.send(blogs);
-        })
-
-        // get all team members
-        app.get('/team', async (req, res) => {
-            const query = {};
-            const cursor = teamCollection.find(query);
-            const team = await cursor.toArray();
-            res.send(team);
-        })
-
         // post fruit api
         app.post('/allfruits', async (req, res) => {
             const query = req.body;
@@ -119,6 +103,22 @@ async function run() {
             const query = { _id: ObjectId(id) };
             const result = await fruitsCollection.deleteOne(query);
             res.send(result);
+        })
+
+        // get all blogs
+        app.get('/blogs', async (req, res) => {
+            const query = {};
+            const cursor = blogsCollection.find(query);
+            const blogs = await cursor.toArray();
+            res.send(blogs);
+        })
+
+        // get all team members
+        app.get('/team', async (req, res) => {
+            const query = {};
+            const cursor = teamCollection.find(query);
+            const team = await cursor.toArray();
+            res.send(team);
         })
 
         console.log('connected to db');
