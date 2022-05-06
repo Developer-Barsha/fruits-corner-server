@@ -32,6 +32,8 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 async function run() {
     await client.connect();
     const fruitsCollection = client.db("fruitsCenter").collection("fruit");
+    const blogsCollection = client.db("fruitsCenter").collection("blog");
+    const teamCollection = client.db("fruitsCenter").collection("team");
 
     try {
         // AUTH
@@ -51,6 +53,7 @@ async function run() {
             res.send(fruits);
         })
 
+        
         // get fruits by user email
         app.get('/userfruits', verifyJWT, async (req, res) => {
             const decodedEmail = req.decoded?.email;
@@ -64,6 +67,22 @@ async function run() {
             else {
                 res.status(403).send({ message: 'Forbidden access' })
             }
+        })
+        
+        // get all blogs
+        app.get('/blogs', async (req, res) => {
+            const query = {};
+            const cursor = blogsCollection.find(query);
+            const blogs = await cursor.toArray();
+            res.send(blogs);
+        })
+
+        // get all team members
+        app.get('/team', async (req, res) => {
+            const query = {};
+            const cursor = teamCollection.find(query);
+            const team = await cursor.toArray();
+            res.send(team);
         })
 
         // post fruit api
