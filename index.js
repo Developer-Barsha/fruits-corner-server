@@ -53,7 +53,7 @@ async function run() {
             res.send(fruits);
         })
 
-        
+
         // get fruits by user email
         app.get('/userfruits', verifyJWT, async (req, res) => {
             const decodedEmail = req.decoded?.email;
@@ -68,7 +68,7 @@ async function run() {
                 res.status(403).send({ message: 'Forbidden access' })
             }
         })
-        
+
         // post fruit api
         app.post('/allfruits', async (req, res) => {
             const query = req.body;
